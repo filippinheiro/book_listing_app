@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">BookListingApp</string>
+    <string name="app_name">Book Listing</string>
+
+    <string name="empty_text">No books were found</string>
 </resources>
