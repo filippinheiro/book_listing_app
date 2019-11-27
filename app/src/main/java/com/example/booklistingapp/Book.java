@@ -1,7 +1,5 @@
 package com.example.booklistingapp;
 
-import java.util.List;
-
 public class Book {
 
     private String mTitle;

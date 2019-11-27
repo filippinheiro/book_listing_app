@@ -6,13 +6,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,19 +39,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private TextView mEmptyView;
     private final static String LOG_TAG = MainActivity.class.getSimpleName();
     BookAdapter mAdapter;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mEmptyView = (TextView) findViewById(R.id.empty_text);
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_circular);
         LoaderManager loaderManager = getSupportLoaderManager();
-        loaderManager.initLoader(LOADER_ID, null, this);
+        if(isConnected()) loaderManager.initLoader(LOADER_ID, null, this);
+        else {mEmptyView.setText(getResources().getString(R.string.no_connection)); mProgressBar.setVisibility(View.GONE);}
         //Finding the reference to the ListView
         ListView booksListView = (ListView) findViewById(R.id.list);
         mAdapter = new BookAdapter(this, new ArrayList<Book>());
         booksListView.setEmptyView(mEmptyView);
         booksListView.setAdapter(mAdapter);
+
 
     }
 
@@ -66,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         Log.i(LOG_TAG, "Loading finished");
         mEmptyView.setText(R.string.empty_text);
+        mProgressBar.setVisibility(View.GONE);
 
     }
 
@@ -76,6 +88,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
-
-
+    private boolean isConnected() {
+        Log.i(LOG_TAG, "Checking connection");
+        ConnectivityManager cm =
+                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = null;
+        if (cm != null) {
+            activeNetwork = cm.getActiveNetworkInfo();
+        }
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        Log.i(LOG_TAG, isConnected ? "OK" : "Not connected");
+        return isConnected;
+    }
 }

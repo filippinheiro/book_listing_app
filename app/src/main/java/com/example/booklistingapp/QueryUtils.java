@@ -69,7 +69,6 @@ public class QueryUtils {
                 inputStream.close();
             }
         }
-
         return jsonResponse;
 
     }
@@ -117,12 +116,12 @@ public class QueryUtils {
                         if (volumeInfo != null) {
                             authors = volumeInfo.optJSONArray("authors");
                             if (authors != null) {
-                                author = authors.optString(i);
+                                author = authors.optString(0);
                             }
                         }
                         double rating = 0;
                         if (volumeInfo != null) {
-                            rating = volumeInfo.optDouble("averageRating");
+                            if(volumeInfo.has("averageRating")) rating = volumeInfo.optDouble("averageRating");
                         }
 
                         Book book = new Book(title, author, rating);
@@ -132,10 +131,6 @@ public class QueryUtils {
                             books.add(book);
                         }
                     }
-
-                    Log.i(LOG_TAG, "Average Rating: " + books.get(i).getAverageRating() + "Author: " + books.get(i).getAuthor());
-                    //Log.i(LOG_TAG, Json);
-
                 }
             }
         } catch (JSONException e) {

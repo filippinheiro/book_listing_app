@@ -30,7 +30,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
         if(listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
 
-            mNameTextView = (TextView) listItemView.findViewById(R.id.name_text_view);
+            mNameTextView = (TextView) listItemView.findViewById(R.id.title_text_view);
             mAuthorTextView = (TextView) listItemView.findViewById(R.id.author_text_view);
             mRatingTextView = (TextView) listItemView.findViewById(R.id.rating_text_view);
 
@@ -46,7 +46,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
             decimalFormat = format.format(currentBook.getAverageRating());
 
             mNameTextView.setText(currentBook.getTitle());
-            mAuthorTextView.setText(currentBook.getAuthor());
+            mAuthorTextView.setText(currentBook.getAuthor().toString());
             mRatingTextView.setText(decimalFormat);
         }
 
