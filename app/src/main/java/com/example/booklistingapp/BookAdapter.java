@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -14,6 +15,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
     private TextView mNameTextView;
     private TextView mAuthorTextView;
     private TextView mRatingTextView;
+    private ImageView mTumbnailImageView;
 
     public BookAdapter(Context context, List<Book> list) {
         super(context, 0, list);
@@ -33,6 +35,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
             mNameTextView = (TextView) listItemView.findViewById(R.id.title_text_view);
             mAuthorTextView = (TextView) listItemView.findViewById(R.id.author_text_view);
             mRatingTextView = (TextView) listItemView.findViewById(R.id.rating_text_view);
+            mTumbnailImageView = (ImageView) listItemView.findViewById(R.id.thumbnail);
 
 
         }
@@ -46,8 +49,9 @@ public class BookAdapter extends ArrayAdapter<Book> {
             decimalFormat = format.format(currentBook.getAverageRating());
 
             mNameTextView.setText(currentBook.getTitle());
-            mAuthorTextView.setText(currentBook.getAuthor().toString());
+            mAuthorTextView.setText(currentBook.getAuthor());
             mRatingTextView.setText(decimalFormat);
+            mTumbnailImageView.setImageBitmap(currentBook.getThumbnail());
         }
 
         return listItemView;

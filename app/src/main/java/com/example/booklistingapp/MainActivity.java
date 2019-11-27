@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @NonNull
     @Override
     public Loader<List<Book>> onCreateLoader(int id, @Nullable Bundle args) {
-        String url = "https://www.googleapis.com/books/v1/volumes?q=android&maxResults=10";
+        String url = "https://www.googleapis.com/books/v1/volumes?q=android&maxResults=20";
         return new BookLoader(this, url);
     }
 

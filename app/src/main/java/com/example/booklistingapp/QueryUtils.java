@@ -1,5 +1,8 @@
 package com.example.booklistingapp;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -104,6 +107,7 @@ public class QueryUtils {
 
             if (items != null) {
                 String author = "";
+                Bitmap thumbnail = null;
                 for (int i = 0; i < items.length(); i++) {
                     JSONObject currentBook = items.optJSONObject(i);
                     if (currentBook != null) {
@@ -121,10 +125,18 @@ public class QueryUtils {
                         }
                         double rating = 0;
                         if (volumeInfo != null) {
-                            if(volumeInfo.has("averageRating")) rating = volumeInfo.optDouble("averageRating");
+                            if (volumeInfo.has("averageRating"))
+                                rating = volumeInfo.optDouble("averageRating");
                         }
-
-                        Book book = new Book(title, author, rating);
+                        if(volumeInfo != null && volumeInfo.has("imageLinks")) {
+                            JSONObject imageLinks = volumeInfo.optJSONObject("imageLinks");
+                            if (imageLinks != null && imageLinks.has("smallThumbnail")) {
+                                String url = imageLinks.optString("smallThumbnail");
+                                URL imageUrl = new URL(url);
+                                thumbnail = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());
+                            }
+                        }
+                        Book book = new Book(title, author, rating, thumbnail);
                         if (!books.isEmpty() && !books.contains(book)) {
                             books.add(book);
                         } else if (books.isEmpty()) {
@@ -134,6 +146,10 @@ public class QueryUtils {
                 }
             }
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return books;
