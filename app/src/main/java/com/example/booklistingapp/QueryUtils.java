@@ -23,6 +23,8 @@ import java.util.List;
 @SuppressWarnings("WeakerAccess")
 
 
+//TODO: Enhance perfomance on slow image loads
+
 public class QueryUtils {
 
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();

@@ -11,6 +11,9 @@ import android.widget.TextView;
 import java.text.DecimalFormat;
 import java.util.List;
 
+
+//TODO: figure out rogue behavior on ArrayList
+
 public class BookAdapter extends ArrayAdapter<Book> {
     private TextView mNameTextView;
     private TextView mAuthorTextView;
